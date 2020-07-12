@@ -25,15 +25,15 @@ const ItemCard = ({
   publishedAt,
   evtClick,
 }) => {
-  console.log(useStyles);
+  const classes = useStyles();
 
   return (
-    <Card className={useStyles.root}>
+    <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           image={`${urlToImage}`}
           title={''}
-          className={useStyles.media}
+          className={classes.media}
         />
         <CardContent>
           <Typography gutterBottom variant={'h5'} component={'h2'}>
