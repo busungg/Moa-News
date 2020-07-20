@@ -31,8 +31,8 @@ const App = () => {
       {data && (
         <FixedSizeList
           width={400}
-          height={600}
-          rowHeight={300}
+          height={800}
+          rowHeight={250}
           list={data.articles.map((value) => {
             return (
               <ItemCard

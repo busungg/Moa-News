@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 //import CardActions from '@material-ui/core/CardActions';
@@ -8,15 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 //import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 600,
-    height: 300,
-  },
-  media: {
-    height: 140,
-  },
-});
+import styles from './style.module.css';
 
 const ItemCard = ({
   title,
@@ -25,24 +16,33 @@ const ItemCard = ({
   publishedAt,
   evtClick,
 }) => {
-  const classes = useStyles();
-
   return (
-    <Card className={classes.root}>
+    <Card className={styles.root}>
       <CardActionArea>
-        <CardMedia
-          image={`${urlToImage}`}
-          title={''}
-          className={classes.media}
-        />
-        <CardContent>
-          <Typography gutterBottom variant={'h5'} component={'h2'}>
-            {title}
-          </Typography>
-          <Typography gutterBottom variant={'h5'} component={'h4'}>
-            {publishedAt}
-          </Typography>
-          <Typography variant={'body2'} color={'textSecondary'} component={'p'}>
+        <div className={styles.wrap__title}>
+          {urlToImage && (
+            <CardMedia
+              image={`${urlToImage}`}
+              title={''}
+              className={styles.media}
+            />
+          )}
+          <div className={styles.title}>
+            <Typography gutterBottom component={'h4'}>
+              {title}
+            </Typography>
+            <Typography gutterBottom component={'h5'}>
+              {publishedAt}
+            </Typography>
+          </div>
+        </div>
+        <CardContent className={styles.wrap__content}>
+          <Typography
+            className={styles.content}
+            variant={'body2'}
+            color={'textSecondary'}
+            component={'p'}
+          >
             {description}
           </Typography>
         </CardContent>
