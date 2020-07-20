@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from '../node_modules/axios/index';
-import VariableSizeList from './Components/Atoms/VariableSizeList';
+import FixedSizeList from './Components/Atoms/FixedSizeList';
 import ItemCard from './Components/Molecules/ItemCard';
 
 const App = () => {
@@ -29,7 +29,7 @@ const App = () => {
         <button onClick={onClick}>불러오기</button>
       </div>
       {data && (
-        <VariableSizeList
+        <FixedSizeList
           width={400}
           height={600}
           rowHeight={300}

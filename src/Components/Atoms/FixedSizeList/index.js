@@ -1,14 +1,10 @@
 import React, { useCallback } from 'react';
 import { FixedSizeList as List } from 'react-window';
 
-const VariableSizeList = ({ width, height, rowHeight, list }) => {
-  console.log(list);
-
+const FixedSizeList = ({ width, height, rowHeight, list }) => {
   const render = useCallback(
     ({ index, style }) => {
-      console.log(index);
-
-      return list[index];
+      return <div style={style}>{list[index]}</div>;
     },
     [list]
   );
@@ -25,4 +21,4 @@ const VariableSizeList = ({ width, height, rowHeight, list }) => {
   );
 };
 
-export default VariableSizeList;
+export default FixedSizeList;
