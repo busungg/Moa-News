@@ -5,7 +5,7 @@
 
 .wrap__title {
   display: flex;
-  height: 160px;
+  height: 130px;
   box-sizing: border-box;
   align-items: center;
   justify-content: space-around;
@@ -14,8 +14,8 @@
 
 .media {
   flex-grow: 0;
-  flex-basis: 280px;
-  height: 140px;
+  flex-basis: 240px;
+  height: 120px;
   box-sizing: border-box;
   margin: 0px 5px;
   background-size: contain !important;
@@ -26,7 +26,7 @@
 }
 
 .wrap__content {
-  height: 90px;
+  height: 120px;
   padding: 5px;
   box-sizing: border-box;
 }
@@ -34,9 +34,6 @@
 .content {
   height: 100%;
   box-sizing: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-
   /* 
     https://www.w3schools.com/cssref/css3_pr_text-overflow.asp
     text-overflow 속성 사용시 white-space, overflow를 사용해야 한다.

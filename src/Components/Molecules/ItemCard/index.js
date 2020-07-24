@@ -9,6 +9,14 @@ import Typography from '@material-ui/core/Typography';
 
 import styles from './style.module.css';
 
+const limitText = (text) => {
+  if (text.length > 180) {
+    return `${text.substring(0, 180)}...`;
+  }
+
+  return text;
+};
+
 const ItemCard = ({
   title,
   description,
@@ -43,7 +51,7 @@ const ItemCard = ({
             color={'textSecondary'}
             component={'p'}
           >
-            {description}
+            {limitText(description)}
           </Typography>
         </CardContent>
       </CardActionArea>
