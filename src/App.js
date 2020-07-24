@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from '../node_modules/axios/index';
 import FixedSizeList from './Components/Atoms/FixedSizeList';
+import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
 import ItemCard from './Components/Molecules/ItemCard';
 
 const App = () => {
@@ -29,24 +30,53 @@ const App = () => {
         <button onClick={onClick}>불러오기</button>
       </div>
       {data && (
-        <FixedSizeList
-          width={400}
-          height={800}
-          rowHeight={250}
-          list={data.articles.map((value) => {
-            return (
-              <ItemCard
-                title={value.title}
-                description={value.description}
-                urlToImage={value.urlToImage}
-                publishedAt={value.publishedAt}
-              />
-            );
-          })}
-        />
+        <>
+          <FixedSizeList
+            width={400}
+            height={500}
+            rowHeight={250}
+            list={data.articles.map((value) => {
+              return (
+                <ItemCard
+                  title={value.title}
+                  description={value.description}
+                  urlToImage={value.urlToImage}
+                  publishedAt={value.publishedAt}
+                />
+              );
+            })}
+          />
+
+          <FixedSizeGrid
+            width={800}
+            height={500}
+            columnWidth={400}
+            rowHeight={250}
+            columnCount={2}
+            list={data.articles.map((value) => {
+              return (
+                <ItemCard
+                  title={value.title}
+                  description={value.description}
+                  urlToImage={value.urlToImage}
+                  publishedAt={value.publishedAt}
+                />
+              );
+            })}
+          />
+        </>
       )}
     </div>
   );
 };
+
+/**
+ * width,
+  height,
+  columnWidth,
+  rowHeight,
+  columnCount,
+  list,
+ */
 
 export default App;
