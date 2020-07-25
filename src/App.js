@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
+
 import './App.css';
+import 'reset-css';
+
 import axios from '../node_modules/axios/index';
 import FixedSizeList from './Components/Atoms/FixedSizeList';
 import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
 import ItemCard from './Components/Molecules/ItemCard';
+import Gnb from './Components/Atoms/Gnb';
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -26,6 +30,9 @@ const App = () => {
 
   return (
     <div>
+      <Gnb
+        list={['오피니언', '정치', '경제', '사회', '국제', '문화', '스포츠']}
+      />
       <div>
         <button onClick={onClick}>불러오기</button>
       </div>

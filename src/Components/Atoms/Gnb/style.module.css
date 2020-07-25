@@ -1,0 +1,38 @@
+.gnb {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  height: 1.8rem;
+}
+
+.gnb-item {
+  flex: 1 1 auto;
+  background-color: var(--color-background);
+  transition: flex 0.2s ease-in;
+}
+
+.gnb-item:hover {
+  flex-grow: 1.5;
+}
+
+.gnb-item:active {
+  background-color: var(--color-background-active);
+}
+
+.gnb-item a {
+  display: block;
+  line-height: 1.8rem;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  color: var(--color-text);
+  text-align: center;
+  text-decoration: none;
+}
+
+.gnb-item a:hover {
+  font-weight: bolder;
+  color: var(--color-text-hover);
+}
+
+.gnb-item a:active {
+  color: var(--color-text-active);
+}

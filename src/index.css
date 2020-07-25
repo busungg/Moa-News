@@ -17,3 +17,14 @@ code {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+:root {
+  --color-background: #ffffff;
+  --color-background-active: #263857;
+  --color-border: #999999;
+  --color-text: #000000;
+  --color-text-hover: #263857;
+  --color-text-active: #eeeeee;
+
+  --font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
