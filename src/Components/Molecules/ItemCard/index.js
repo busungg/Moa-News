@@ -10,8 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import styles from './style.module.css';
 
 const limitText = (text) => {
-  if (text.length > 180) {
+  if (text && text.length > 180) {
     return `${text.substring(0, 180)}...`;
+  } else if (!text) {
+    return '....';
   }
 
   return text;

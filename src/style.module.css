@@ -1,0 +1,41 @@
+.flex-container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.flex-item {
+  flex-grow: 1;
+}
+
+.flex-container header {
+  height: 6.5rem;
+  flex-grow: 0;
+}
+
+.flex-container footer {
+  height: 3rem;
+  flex-grow: 0;
+  color: var(--color-text-active);
+  font-size: 1rem;
+  text-align: center;
+  line-height: 3rem;
+  background-color: var(--color-background-active);
+}
+
+.wrap {
+  margin-top: 1rem;
+}
+
+.logo {
+  height: 2rem;
+  margin-left: 3px;
+  line-height: 2rem;
+  font-size: 2rem;
+  font-weight: bolder;
+  font-family: var(--font-family);
+  text-shadow: 1px 1px #676b70;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
