@@ -1,6 +1,6 @@
-import React, { createContext, useReducer, useMemo, useEffect } from './react';
-import axios from '../node_modules/axios/index';
+import React, { createContext, useReducer, useEffect } from 'react';
 import produce from 'immer';
+const axios = require('axios').default;
 
 const getData = async () => {
   const response = await axios.get(
@@ -11,24 +11,44 @@ const getData = async () => {
       },
     }
   );
+
+  return { status: response.status, data: response.data };
 };
 
 const initialState = {
   params: {
-    page: 1,
+    page: 0,
     pageSize: 100,
-    isLoading: true,
   },
+  isLoading: true,
   results: { totalResults: 0, articles: [] },
-  dispatch: null,
 };
 
+/**
+ * 1. 어디에서든지 getData를 호출하면 다음 페이지를 불러오게 하고 싶다.
+ * 2. useReducer에서는 async/await이 적용되지 않는다고 한다. -> 더 확실한 이유는 더 확인해본다.
+ * 3. useEffect를 사용해야 하기 때문에 [] 안쪽에 page를 넣어서 호출을 조절하고 싶은데 page를 넣어버리게 되면
+ *    getData에서 page를 올려버리기 때문에 계속 호출이 될 것이다.
+ */
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'get':
+    case 'getData': {
       return produce(state, (draft) => {
-        draft.params.isLoading = true;
+        draft.isLoading = true;
         draft.params.page += 1;
+      });
+    }
+
+    case 'setData':
+      //action data
+      return produce(state, (draft) => {
+        if (action.data) {
+          const { totalResults, articles } = action.data;
+
+          draft.results.totalResults += totalResults;
+          draft.results.articles = draft.results.articles.concat(articles);
+        }
+        draft.isLoading = false;
       });
     default:
       return state;
@@ -36,23 +56,42 @@ const reducer = (state, action) => {
 };
 
 const ContextHeadlines = createContext(undefined);
+const ContextDispatch = createContext(undefined);
 
 const HeadlinesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const initContext = useMemo(() => {
-    return produce(state, (draft) => {
-      draft.dispatch = dispatch;
-    });
-  }, []);
+  useEffect(() => {
+    if (state.page === 0) {
+      dispatch({ type: 'getData' });
+    } else {
+      async function fetchData() {
+        const { status, data } = await getData();
 
-  useEffect(() => {}, [state.page]);
+        if (status === 200) {
+          dispatch({ type: 'setData', data });
+        } else {
+          dispatch({ type: 'setData', data: null });
+        }
+      }
+
+      fetchData();
+    }
+  }, [state.page]);
+
+  console.log(state.isLoading);
 
   return (
-    <ContextHeadlines.Provider value={initContext}>
-      {children}
+    <ContextHeadlines.Provider value={state}>
+      <ContextDispatch.Provider value={dispatch}>
+        {state.isLoading && <div style={{ color: '#000000' }}>Loading</div>}
+        {children}
+      </ContextDispatch.Provider>
     </ContextHeadlines.Provider>
   );
 };
 
-export default ContextHeadlines;
+const { Consumer: HeadlinesConsumer } = ContextHeadlines;
+const { Consumer: DispatchConsumer } = ContextDispatch;
+
+export { HeadlinesProvider, HeadlinesConsumer, DispatchConsumer };

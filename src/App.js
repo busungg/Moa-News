@@ -1,34 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 
 import './App.css';
 import 'reset-css';
 import styles from './style.module.css';
 
-import axios from '../node_modules/axios/index';
-import FixedSizeList from './Components/Atoms/FixedSizeList';
+//import FixedSizeList from './Components/Atoms/FixedSizeList';
 import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
 import ItemCard from './Components/Molecules/ItemCard';
 import Gnb from './Components/Atoms/Gnb';
 
-const App = () => {
-  const [data, setData] = useState(null);
-  const onClick = async () => {
-    try {
-      const response = await axios.get(
-        'https://newsapi.org/v2/top-headlines?country=kr',
-        {
-          headers: {
-            ['X-Api-Key']: 'efed9e5affd44cb7a0a5c1e4eb552141',
-          },
-        }
-      );
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+//Context
+import {
+  HeadlinesProvider,
+  HeadlinesConsumer,
+  DispatchConsumer,
+} from './context/ContextHeadlines';
 
+const App = () => {
   return (
     <div className={styles['flex-container']}>
       <header className={styles['flex-item']}>
@@ -49,58 +38,63 @@ const App = () => {
           />
         </div>
       </header>
-      <section className={styles['flex-item']}>
-        <button onClick={onClick}>불러오기</button>
-        {data && (
-          <>
-            <FixedSizeList
-              width={400}
-              height={500}
-              rowHeight={250}
-              list={data.articles.map((value) => {
-                return (
-                  <ItemCard
-                    title={value.title}
-                    description={value.description}
-                    urlToImage={value.urlToImage}
-                    publishedAt={value.publishedAt}
-                  />
-                );
-              })}
-            />
+      <HeadlinesProvider>
+        <section className={styles['flex-item']}>
+          <HeadlinesConsumer>
+            {(value) => {
+              console.log(value);
 
-            <FixedSizeGrid
-              width={800}
-              height={500}
-              columnWidth={400}
-              rowHeight={250}
-              columnCount={2}
-              list={data.articles.map((value) => {
-                return (
-                  <ItemCard
-                    title={value.title}
-                    description={value.description}
-                    urlToImage={value.urlToImage}
-                    publishedAt={value.publishedAt}
-                  />
-                );
-              })}
-            />
-          </>
-        )}
-      </section>
+              const { results } = value;
+
+              console.log(results);
+
+              return (
+                <FixedSizeGrid
+                  width={800}
+                  height={500}
+                  columnWidth={400}
+                  rowHeight={250}
+                  columnCount={2}
+                  list={results.articles.map((article) => {
+                    return (
+                      <ItemCard
+                        title={article.title}
+                        description={article.description}
+                        urlToImage={article.urlToImage}
+                        publishedAt={article.publishedAt}
+                      />
+                    );
+                  })}
+                />
+              );
+            }}
+          </HeadlinesConsumer>
+        </section>
+      </HeadlinesProvider>
       <footer className={styles['flex-item']}>busungg 2020-07-27</footer>
     </div>
   );
 };
 
 /**
- * width,
-  height,
-  columnWidth,
-  rowHeight,
-  columnCount,
-  list,
+
+
+
+  <FixedSizeList
+    width={400}
+    height={500}
+    rowHeight={250}
+    list={data.articles.map((value) => {
+      return (
+        <ItemCard
+          title={value.title}
+          description={value.description}
+          urlToImage={value.urlToImage}
+          publishedAt={value.publishedAt}
+        />
+      );
+    })}
+  />
  */
 
 export default App;
