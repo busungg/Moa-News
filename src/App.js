@@ -3,10 +3,11 @@ import logo from './logo.svg';
 
 import './App.css';
 import 'reset-css';
+import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
-//import FixedSizeList from './Components/Atoms/FixedSizeList';
-import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
+import FixedSizeList from './Components/Atoms/FixedSizeList';
+//import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
 import ItemCard from './Components/Molecules/ItemCard';
 import Gnb from './Components/Atoms/Gnb';
 
@@ -42,19 +43,10 @@ const App = () => {
         <section className={styles['flex-item']}>
           <HeadlinesConsumer>
             {(value) => {
-              console.log(value);
-
               const { results } = value;
-
-              console.log(results);
-
               return (
-                <FixedSizeGrid
-                  width={800}
-                  height={500}
-                  columnWidth={400}
+                <FixedSizeList
                   rowHeight={250}
-                  columnCount={2}
                   list={results.articles.map((article) => {
                     return (
                       <ItemCard

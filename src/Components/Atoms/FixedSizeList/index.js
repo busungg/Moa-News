@@ -1,23 +1,36 @@
 import React, { useCallback } from 'react';
-import { FixedSizeList as List } from 'react-window';
+import { AutoSizer, List } from 'react-virtualized';
 
-const FixedSizeList = ({ width, height, rowHeight, list }) => {
+const FixedSizeList = ({ rowHeight, list }) => {
   const render = useCallback(
-    ({ index, style }) => {
-      return <div style={style}>{list[index]}</div>;
+    ({
+      index, // Index of row
+      key, // Unique key within array of rendered rows
+      style, // Style object to be applied to row (to position it);
+    }) => {
+      return (
+        <div key={key} style={style}>
+          {list[index]}
+        </div>
+      );
     },
     [list]
   );
 
   return (
-    <List
-      widt={width}
-      height={height}
-      itemCount={list.length}
-      itemSize={rowHeight}
-    >
-      {render}
-    </List>
+    <AutoSizer>
+      {({ width, height }) => {
+        return (
+          <List
+            width={width}
+            height={height}
+            rowCount={list.length}
+            rowHeight={rowHeight}
+            rowRenderer={render}
+          />
+        );
+      }}
+    </AutoSizer>
   );
 };
 

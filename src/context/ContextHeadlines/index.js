@@ -79,8 +79,6 @@ const HeadlinesProvider = ({ children }) => {
     }
   }, [state.page]);
 
-  console.log(state.isLoading);
-
   return (
     <ContextHeadlines.Provider value={state}>
       <ContextDispatch.Provider value={dispatch}>
