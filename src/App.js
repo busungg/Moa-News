@@ -6,10 +6,10 @@ import 'reset-css';
 import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
-import FixedSizeList from './components/atoms/FixedSizeList';
-import FixedSizeGrid from './components/atoms/FixedSizeGrid';
-import ItemCard from './components/molecules/ItemCard';
 import Gnb from './components/atoms/Gnb';
+import NewsList from './components/templates/NewsList';
+
+import useResize from './hooks/useResize';
 
 //Context
 import {
@@ -19,6 +19,8 @@ import {
 } from './context/ContextHeadlines';
 
 const App = () => {
+  const windowSize = useResize();
+
   return (
     <div className={styles['flex-container']}>
       <header className={styles['flex-item']}>
@@ -42,41 +44,12 @@ const App = () => {
       <HeadlinesProvider>
         <section className={styles['flex-item']}>
           <HeadlinesConsumer>
-            {/*(value) => {
-              const { results } = value;
-              return (
-                <FixedSizeGrid
-                  rowHeight={260}
-                  columnCount={2}
-                  list={results.articles.map((article) => {
-                    return (
-                      <ItemCard
-                        title={article.title}
-                        description={article.description}
-                        urlToImage={article.urlToImage}
-                        publishedAt={article.publishedAt}
-                      />
-                    );
-                  })}
-                />
-              );
-            }*/}
-
             {(value) => {
               const { results } = value;
               return (
-                <FixedSizeList
-                  rowHeight={260}
-                  list={results.articles.map((article) => {
-                    return (
-                      <ItemCard
-                        title={article.title}
-                        description={article.description}
-                        urlToImage={article.urlToImage}
-                        publishedAt={article.publishedAt}
-                      />
-                    );
-                  })}
+                <NewsList
+                  screenSize={windowSize.width}
+                  articles={results.articles}
                 />
               );
             }}
