@@ -6,10 +6,10 @@ import 'reset-css';
 import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
-import FixedSizeList from './Components/Atoms/FixedSizeList';
-import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
-import ItemCard from './Components/Molecules/ItemCard';
-import Gnb from './Components/Atoms/Gnb';
+import FixedSizeList from './components/atoms/FixedSizeList';
+import FixedSizeGrid from './components/atoms/FixedSizeGrid';
+import ItemCard from './components/molecules/ItemCard';
+import Gnb from './components/atoms/Gnb';
 
 //Context
 import {
