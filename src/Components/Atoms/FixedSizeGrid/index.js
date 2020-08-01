@@ -1,18 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
-import { FixedSizeGrid as Grid } from 'react-window';
+import { AutoSizer, Grid } from 'react-virtualized';
 
-const FixedSizeGrid = ({
-  width,
-  height,
-  columnWidth,
-  rowHeight,
-  columnCount,
-  list,
-}) => {
+const FixedSizeGrid = ({ columnWidth, rowHeight, columnCount, list }) => {
   const render = useCallback(
-    ({ columnIndex, rowIndex, style }) => {
+    ({ key, columnIndex, rowIndex, style }) => {
       return (
-        <div style={style}>{list[columnCount * rowIndex + columnIndex]}</div>
+        <div key={key} style={style}>
+          {list[columnCount * rowIndex + columnIndex]}
+        </div>
       );
     },
     [list, columnCount]
@@ -24,16 +19,19 @@ const FixedSizeGrid = ({
   ]);
 
   return (
-    <Grid
-      width={width}
-      height={height}
-      columnCount={columnCount}
-      rowCount={rowCount}
-      columnWidth={columnWidth}
-      rowHeight={rowHeight}
-    >
-      {render}
-    </Grid>
+    <AutoSizer>
+      {({ width, height }) => (
+        <Grid
+          cellRenderer={render}
+          width={width}
+          height={height}
+          columnCount={columnCount}
+          rowCount={rowCount}
+          columnWidth={columnWidth}
+          rowHeight={rowHeight}
+        />
+      )}
+    </AutoSizer>
   );
 };
 

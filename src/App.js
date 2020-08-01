@@ -7,7 +7,7 @@ import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
 import FixedSizeList from './Components/Atoms/FixedSizeList';
-//import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
+import FixedSizeGrid from './Components/Atoms/FixedSizeGrid';
 import ItemCard from './Components/Molecules/ItemCard';
 import Gnb from './Components/Atoms/Gnb';
 
@@ -45,6 +45,27 @@ const App = () => {
             {(value) => {
               const { results } = value;
               return (
+                <FixedSizeGrid
+                  columnWidth={500}
+                  rowHeight={250}
+                  columnCount={2}
+                  list={results.articles.map((article) => {
+                    return (
+                      <ItemCard
+                        title={article.title}
+                        description={article.description}
+                        urlToImage={article.urlToImage}
+                        publishedAt={article.publishedAt}
+                      />
+                    );
+                  })}
+                />
+              );
+            }}
+
+            {/*(value) => {
+              const { results } = value;
+              return (
                 <FixedSizeList
                   rowHeight={250}
                   list={results.articles.map((article) => {
@@ -59,7 +80,7 @@ const App = () => {
                   })}
                 />
               );
-            }}
+            }*/}
           </HeadlinesConsumer>
         </section>
       </HeadlinesProvider>
