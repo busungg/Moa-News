@@ -42,12 +42,11 @@ const App = () => {
       <HeadlinesProvider>
         <section className={styles['flex-item']}>
           <HeadlinesConsumer>
-            {(value) => {
+            {/*(value) => {
               const { results } = value;
               return (
                 <FixedSizeGrid
-                  columnWidth={500}
-                  rowHeight={250}
+                  rowHeight={260}
                   columnCount={2}
                   list={results.articles.map((article) => {
                     return (
@@ -61,13 +60,13 @@ const App = () => {
                   })}
                 />
               );
-            }}
+            }*/}
 
-            {/*(value) => {
+            {(value) => {
               const { results } = value;
               return (
                 <FixedSizeList
-                  rowHeight={250}
+                  rowHeight={260}
                   list={results.articles.map((article) => {
                     return (
                       <ItemCard
@@ -80,7 +79,7 @@ const App = () => {
                   })}
                 />
               );
-            }*/}
+            }}
           </HeadlinesConsumer>
         </section>
       </HeadlinesProvider>
@@ -90,24 +89,7 @@ const App = () => {
 };
 
 /**
-
-
-
-  <FixedSizeList
-    width={400}
-    height={500}
-    rowHeight={250}
-    list={data.articles.map((value) => {
-      return (
-        <ItemCard
-          title={value.title}
-          description={value.description}
-          urlToImage={value.urlToImage}
-          publishedAt={value.publishedAt}
-        />
-      );
-    })}
-  />
+  // ipad = 768 px
  */
 
 export default App;

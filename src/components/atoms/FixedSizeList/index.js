@@ -9,7 +9,15 @@ const FixedSizeList = ({ rowHeight, list }) => {
       style, // Style object to be applied to row (to position it);
     }) => {
       return (
-        <div key={key} style={style}>
+        <div
+          key={key}
+          style={{
+            ...style,
+            width: '98%',
+            height: style.height + 10,
+            margin: 5,
+          }}
+        >
           {list[index]}
         </div>
       );
@@ -25,7 +33,7 @@ const FixedSizeList = ({ rowHeight, list }) => {
             width={width}
             height={height}
             rowCount={list.length}
-            rowHeight={rowHeight}
+            rowHeight={rowHeight + 10}
             rowRenderer={render}
           />
         );

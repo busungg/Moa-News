@@ -1,11 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
 import { AutoSizer, Grid } from 'react-virtualized';
 
-const FixedSizeGrid = ({ columnWidth, rowHeight, columnCount, list }) => {
+const FixedSizeGrid = ({ rowHeight, columnCount, list }) => {
   const render = useCallback(
     ({ key, columnIndex, rowIndex, style }) => {
       return (
-        <div key={key} style={style}>
+        <div
+          key={key}
+          style={{
+            ...style,
+            width: style.width - 10,
+            height: style.height + 10,
+            margin: 5,
+          }}
+        >
           {list[columnCount * rowIndex + columnIndex]}
         </div>
       );
@@ -27,8 +35,8 @@ const FixedSizeGrid = ({ columnWidth, rowHeight, columnCount, list }) => {
           height={height}
           columnCount={columnCount}
           rowCount={rowCount}
-          columnWidth={columnWidth}
-          rowHeight={rowHeight}
+          columnWidth={width / columnCount - 10}
+          rowHeight={rowHeight + 10}
         />
       )}
     </AutoSizer>
