@@ -13,6 +13,10 @@
   flex-grow: 0;
 }
 
+.flex-container section {
+  padding: 1rem;
+}
+
 .flex-container footer {
   height: 3rem;
   flex-grow: 0;
