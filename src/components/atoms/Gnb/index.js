@@ -8,8 +8,12 @@ const Gnb = ({ list }) => {
     <ul className={styles.gnb}>
       {list.map((value) => {
         return (
-          <li className={styles['gnb-item']}>
-            <a href="#">{value}</a>
+          <li
+            key={value.category}
+            className={styles['gnb-item']}
+            data-category={value.category}
+          >
+            <a href="#">{value.title}</a>
           </li>
         );
       })}

@@ -1,5 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
+
+//임시 카테고리 추후 api로 받아 올 수 있도록 한다.
+import gnbList from './datas/gnb.json';
 
 import './App.css';
 import 'reset-css';
@@ -17,8 +19,6 @@ import {
   HeadlinesConsumer,
   DispatchConsumer,
 } from './context/ContextHeadlines';
-
-const gnbList = ['오피니언', '정치', '경제', '사회', '국제', '문화', '스포츠'];
 
 const App = () => {
   const windowSize = useResize();

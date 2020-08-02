@@ -1,0 +1,8 @@
+[
+  { "title": "경제", "category": "business" },
+  { "title": "연예", "category": "entertainment" },
+  { "title": "건강", "category": "health" },
+  { "title": "과학", "category": "science" },
+  { "title": "스포츠", "category": "sports" },
+  { "title": "기술", "category": "technology " }
+]
