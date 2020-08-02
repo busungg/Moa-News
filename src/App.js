@@ -18,6 +18,8 @@ import {
   DispatchConsumer,
 } from './context/ContextHeadlines';
 
+const gnbList = ['오피니언', '정치', '경제', '사회', '국제', '문화', '스포츠'];
+
 const App = () => {
   const windowSize = useResize();
 
@@ -25,20 +27,11 @@ const App = () => {
     <div className={styles['flex-container']}>
       <header className={styles['flex-item']}>
         <div className={styles.wrap}>
+          {/** 추후 layout을 template으로 분리하여 메모이징된 컴포넌트를 사용하도록 하자 */}
           <span className={styles.logo}>Moa News</span>
         </div>
         <div className={styles.wrap}>
-          <Gnb
-            list={[
-              '오피니언',
-              '정치',
-              '경제',
-              '사회',
-              '국제',
-              '문화',
-              '스포츠',
-            ]}
-          />
+          <Gnb list={gnbList} />
         </div>
       </header>
       <HeadlinesProvider>
