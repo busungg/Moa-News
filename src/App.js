@@ -17,7 +17,6 @@ import useResize from './hooks/useResize';
 import {
   HeadlinesProvider,
   HeadlinesConsumer,
-  DispatchConsumer,
 } from './context/ContextHeadlines';
 
 const App = () => {

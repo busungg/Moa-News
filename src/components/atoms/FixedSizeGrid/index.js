@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { AutoSizer, Grid } from 'react-virtualized';
 
-const FixedSizeGrid = ({ rowHeight, columnCount, list }) => {
+const FixedSizeGrid = ({ rowHeight, columnCount, list, dispatch }) => {
   const render = useCallback(
     ({ key, columnIndex, rowIndex, style }) => {
       return (
@@ -26,6 +26,17 @@ const FixedSizeGrid = ({ rowHeight, columnCount, list }) => {
     columnCount,
   ]);
 
+  const onScroll = useCallback(({ clientHeight, scrollHeight, scrollTop }) => {
+    console.log(clientHeight);
+    console.log(scrollHeight);
+    console.log(scrollTop);
+
+    if (clientHeight + scrollTop === scrollHeight) {
+      console.log('OnScoll End');
+      dispatch({ type: 'getData' });
+    }
+  }, []);
+
   return (
     <AutoSizer>
       {({ width, height }) => (
@@ -37,6 +48,7 @@ const FixedSizeGrid = ({ rowHeight, columnCount, list }) => {
           rowCount={rowCount}
           columnWidth={width / columnCount - 10}
           rowHeight={rowHeight + 10}
+          onScroll={onScroll}
         />
       )}
     </AutoSizer>

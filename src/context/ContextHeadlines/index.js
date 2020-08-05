@@ -65,6 +65,8 @@ const HeadlinesProvider = ({ children }) => {
     if (state.page === 0) {
       dispatch({ type: 'getData' });
     } else {
+      console.log('get data');
+
       async function fetchData() {
         const { status, data } = await getData();
 
@@ -77,7 +79,7 @@ const HeadlinesProvider = ({ children }) => {
 
       fetchData();
     }
-  }, [state.page]);
+  }, [state.params.page]);
 
   return (
     <ContextHeadlines.Provider value={state}>
