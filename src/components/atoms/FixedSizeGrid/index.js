@@ -26,16 +26,14 @@ const FixedSizeGrid = ({ rowHeight, columnCount, list, dispatch }) => {
     columnCount,
   ]);
 
-  const onScroll = useCallback(({ clientHeight, scrollHeight, scrollTop }) => {
-    console.log(clientHeight);
-    console.log(scrollHeight);
-    console.log(scrollTop);
-
-    if (clientHeight + scrollTop === scrollHeight) {
-      console.log('OnScoll End');
-      dispatch({ type: 'getData' });
-    }
-  }, []);
+  const onScroll = useCallback(
+    ({ clientHeight, scrollHeight, scrollTop }) => {
+      if (list.length > 0 && clientHeight + scrollTop === scrollHeight) {
+        dispatch({ type: 'getData' });
+      }
+    },
+    [list]
+  );
 
   return (
     <AutoSizer>

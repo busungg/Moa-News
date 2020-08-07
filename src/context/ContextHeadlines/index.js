@@ -2,9 +2,13 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import produce from 'immer';
 const axios = require('axios').default;
 
-const getData = async () => {
+const getData = async ({ page, pageSize }) => {
+  console.log(
+    `https://newsapi.org/v2/top-headlines?country=kr&page=${page}&pageSize=${pageSize}`
+  );
+
   const response = await axios.get(
-    'https://newsapi.org/v2/top-headlines?country=kr',
+    `https://newsapi.org/v2/top-headlines?country=kr&page=${page}&pageSize=${pageSize}`,
     {
       headers: {
         ['X-Api-Key']: 'efed9e5affd44cb7a0a5c1e4eb552141',
@@ -18,7 +22,7 @@ const getData = async () => {
 const initialState = {
   params: {
     page: 0,
-    pageSize: 100,
+    pageSize: 10,
   },
   isLoading: true,
   results: { totalResults: 0, articles: [] },
@@ -45,7 +49,7 @@ const reducer = (state, action) => {
         if (action.data) {
           const { totalResults, articles } = action.data;
 
-          draft.results.totalResults += totalResults;
+          draft.results.totalResults = totalResults;
           draft.results.articles = draft.results.articles.concat(articles);
         }
         draft.isLoading = false;
@@ -62,13 +66,11 @@ const HeadlinesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (state.page === 0) {
+    if (state.params.page === 0) {
       dispatch({ type: 'getData' });
     } else {
-      console.log('get data');
-
       async function fetchData() {
-        const { status, data } = await getData();
+        const { status, data } = await getData(state.params);
 
         if (status === 200) {
           dispatch({ type: 'setData', data });
