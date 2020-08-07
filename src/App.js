@@ -23,8 +23,8 @@ const App = () => {
   const windowSize = useResize();
 
   return (
-    <div className={styles['flex-container']}>
-      <header className={styles['flex-item']}>
+    <div className={styles['grid-container']}>
+      <header>
         <div className={styles.wrap}>
           {/** 추후 layout을 template으로 분리하여 메모이징된 컴포넌트를 사용하도록 하자 */}
           <span className={styles.logo}>Moa News</span>
@@ -34,7 +34,7 @@ const App = () => {
         </div>
       </header>
       <HeadlinesProvider>
-        <section className={styles['flex-item']}>
+        <section>
           <HeadlinesConsumer>
             {(value) => {
               const { results } = value;
@@ -48,7 +48,7 @@ const App = () => {
           </HeadlinesConsumer>
         </section>
       </HeadlinesProvider>
-      <footer className={styles['flex-item']}>busungg 2020-07-27</footer>
+      <footer>busungg 2020-07-27</footer>
     </div>
   );
 };

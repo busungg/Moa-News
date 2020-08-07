@@ -86,7 +86,7 @@ const HeadlinesProvider = ({ children }) => {
   return (
     <ContextHeadlines.Provider value={state}>
       <ContextDispatch.Provider value={dispatch}>
-        {state.isLoading && <div style={{ color: '#000000' }}>Loading</div>}
+        {/* {state.isLoading && <div style={{ color: '#000000' }}>Loading</div>} */}
         {children}
       </ContextDispatch.Provider>
     </ContextHeadlines.Provider>
