@@ -25,18 +25,19 @@ const getNewsItems = (articles) => {
 const NewsList = ({ screenSize, articles }) => {
   return (
     <DispatchConsumer>
-      {(value) => {
+      {(dispatch) => {
         return screenSize >= GRID_SCREEN_SIZE ? (
           <FixedSizeGrid
             rowHeight={HEIGHT_NEWS_ITEM}
             columnCount={2}
             list={getNewsItems(articles)}
-            dispatch={value}
+            dispatch={dispatch}
           />
         ) : (
           <FixedSizeList
             rowHeight={HEIGHT_NEWS_ITEM}
             list={getNewsItems(articles)}
+            dispatch={dispatch}
           />
         );
       }}
