@@ -9,7 +9,8 @@ import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
 import Gnb from './components/atoms/Gnb';
-import NewsList from './components/templates/NewsList';
+import NewsListContainer from './containers/NewsListContainer';
+//import NewsList from './components/templates/NewsList';
 
 import useResize from './hooks/useResize';
 
@@ -21,7 +22,6 @@ import {
 
 const App = () => {
   const windowSize = useResize();
-
   return (
     <div className={styles['grid-container']}>
       <header>
@@ -33,6 +33,10 @@ const App = () => {
           <Gnb list={gnbList} />
         </div>
       </header>
+      <section>
+        <NewsListContainer windowSize={windowSize} />
+      </section>
+      {/*
       <HeadlinesProvider>
         <section>
           <HeadlinesConsumer>
@@ -48,6 +52,7 @@ const App = () => {
           </HeadlinesConsumer>
         </section>
       </HeadlinesProvider>
+      */}
       <footer>busungg 2020-07-27</footer>
     </div>
   );
