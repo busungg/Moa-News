@@ -1,14 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+
+//redux
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './modules';
+import loggerMiddleware from './libs/loggerMiddleware';
+import { createLogger } from 'redux-logger';
+
+//style
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(rootReducer, composeWithDevTools());
+//composeWithDevTools(),
+const logger = createLogger();
+const store = createStore(
+  rootReducer,
+  applyMiddleware(loggerMiddleware, logger)
+);
 
 ReactDOM.render(
   <React.StrictMode>
