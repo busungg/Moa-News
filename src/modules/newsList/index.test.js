@@ -1,4 +1,4 @@
-import newsList, { paramSet, dataSet } from './index';
+import newsList, { setParams, setNews } from './index';
 
 //using mock
 
@@ -6,7 +6,7 @@ import newsList, { paramSet, dataSet } from './index';
  * set param test
  */
 it('set params', () => {
-  const state = newsList(undefined, paramSet({ page: 5 }));
+  const state = newsList(undefined, setParams({ page: 5 }));
 
   expect(state.params.page).toBe(5);
 });
@@ -15,7 +15,7 @@ it('set params', () => {
  * set data totalResults
  */
 it('set data totalResults', () => {
-  const state = newsList(undefined, dataSet({ totalResults: 5 }));
+  const state = newsList(undefined, setNews({ totalResults: 5 }));
 
   expect(state.results.totalResults).toBe(5);
 });
@@ -24,7 +24,7 @@ it('set data totalResults', () => {
  * set data articles
  */
 it('set data articles', () => {
-  const state = newsList(undefined, dataSet({ articles: [1, 2, 3, 4, 5] }));
+  const state = newsList(undefined, setNews({ articles: [1, 2, 3, 4, 5] }));
 
   expect(state.results.articles.length).toBe(5);
   expect(state.results.articles.indexOf(1)).not.toBe(-1);

@@ -1,15 +1,16 @@
 import produce from 'immer';
+import { createAction, handleActions } from 'redux-actions';
 
 //status
-const PARAM_SET = 'newsList/PARAM_SET';
+const SET_PARAM = 'newsList/SET_PARAM';
 
 //http
-const DATA_GET = 'newsList/DATA_GET';
-const DATA_SET = 'newsList/DATA_SET';
+const GET_NEWS = 'newsList/GET_NEWS';
+const SET_NEWS = 'newsList/SET_NEWS';
 
-export const paramSet = (payload) => ({ type: PARAM_SET, payload });
-export const dataGet = () => ({ type: DATA_GET });
-export const dataSet = (payload) => ({ type: DATA_SET, payload });
+export const setParams = createAction(SET_PARAM);
+export const getNews = createAction(GET_NEWS);
+export const setNews = createAction(SET_NEWS);
 
 const initialState = {
   params: {
@@ -19,28 +20,25 @@ const initialState = {
   results: { totalResults: 0, articles: [] },
 };
 
-function newsList(state = initialState, { type, payload }) {
-  switch (type) {
-    case PARAM_SET:
+const newsList = handleActions(
+  {
+    [SET_PARAM]: (state, { payload: params }) => {
       return produce(state, (draft) => {
-        draft.params = payload;
+        draft.params = params;
       });
-
-    case DATA_GET:
-      return state;
-
-    case DATA_SET:
+    },
+    [GET_NEWS]: (state, { payload }) => state,
+    [SET_NEWS]: (state, { payload: datas }) => {
       return produce(state, (draft) => {
-        const { totalResults, articles } = payload;
+        const { totalResults, articles } = datas;
         draft.results = {
           totalResults,
           articles: articles && articles.concat(draft.results.articles),
         };
       });
-
-    default:
-      return state;
-  }
-}
+    },
+  },
+  initialState
+);
 
 export default newsList;
