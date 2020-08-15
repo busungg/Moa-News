@@ -14,11 +14,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-//composeWithDevTools(),
 const logger = createLogger();
 const store = createStore(
   rootReducer,
-  applyMiddleware(loggerMiddleware, logger)
+  composeWithDevTools(applyMiddleware(loggerMiddleware, logger))
 );
 
 ReactDOM.render(
