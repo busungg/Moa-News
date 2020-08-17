@@ -1,8 +1,13 @@
-import { makeUrl } from '../utils';
-const axios = require('axios').default;
+import axios from 'axios';
+
+//const axios = require('axios').default;
 
 const httpGet = async (url, params, headers) => {
-  const response = await axios.get(makeUrl(url, params), {
+  const response = await axios.get(url, {
+    params: {
+      ...params,
+    },
+    responseType: 'json',
     headers: {
       ...headers,
     },
