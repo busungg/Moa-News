@@ -6,8 +6,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './modules';
-import loggerMiddleware from './libs/loggerMiddleware';
 import { createLogger } from 'redux-logger';
+import ReduxThunk from 'redux-thunk';
 
 //style
 import './index.css';
@@ -17,7 +17,7 @@ import * as serviceWorker from './serviceWorker';
 const logger = createLogger();
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(loggerMiddleware, logger))
+  composeWithDevTools(applyMiddleware(logger, ReduxThunk))
 );
 
 ReactDOM.render(
