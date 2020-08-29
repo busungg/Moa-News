@@ -1,4 +1,4 @@
-import httpGet from '../../utils/http/get';
+import { httpGet } from '../../utils/http';
 
 const headers = {
   ['X-Api-Key']: 'efed9e5affd44cb7a0a5c1e4eb552141',

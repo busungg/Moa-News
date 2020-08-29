@@ -3,44 +3,71 @@ import { createAction, handleActions } from 'redux-actions';
 import { getHeadlines } from '../../apis/newsListApi';
 
 //http
-const GET_NEWS = 'newsList/GET_NEWS';
-const GET_NEWS_SUCCESS = 'newsList/GET_NEWS_SUCCESS';
-const GET_NEWS_FAILURE = 'newsList/GET_NEWS_FAILURE';
-
+const LOADING = 'newsList/LOADING';
+const FAIL = 'newsList/FAIL';
+const SET_PARAMS = 'newsList/SET_PARAMS';
 const SET_NEWS = 'newsList/SET_NEWS';
 
-/**
- * 로딩 표시 필요
- * dispatch(loading);
- */
+//action
+export const loading = createAction(LOADING);
+export const fail = createAction(FAIL, (isFail, failMessage) => {
+  return {
+    isFail,
+    failMessage,
+  };
+});
+export const setNews = createAction(SET_NEWS);
+export const setParams = createAction(SET_PARAMS);
+
+//thunk
 export const getNews = (params) => async (dispatch) => {
-  dispatch({ type: GET_NEWS, payload: params });
+  dispatch(loading(true));
   try {
     const response = await getHeadlines(params);
-    dispatch({ type: GET_NEWS_SUCCESS, payload: response.data });
-  } catch (e) {}
+    dispatch(setParams(params));
+    dispatch(setNews(response.data));
+  } catch (e) {
+    dispatch(fail(true, e));
+  }
+  dispatch(loading(false));
 };
 
 const initialState = {
+  loading: false,
+  isFail: false,
+  failMessage: '',
   params: {
     country: 'kr',
     page: 0,
     pageSize: 10,
   },
   results: { totalResults: 0, articles: [] },
-  loading: false,
 };
 
 const newsList = handleActions(
   {
-    [GET_NEWS]: (state, { payload: params }) => {
+    [LOADING]: (state, { payload }) => {
       return produce(state, (draft) => {
-        draft.params = params;
-        draft.loading = true;
+        draft.loading = payload;
       });
     },
 
-    [GET_NEWS_SUCCESS]: (state, { payload: datas }) => {
+    [FAIL]: (state, { payload }) => {
+      const { isFail, failMessage } = payload;
+
+      return produce(state, (draft) => {
+        draft.isFail = isFail;
+        draft.failMessage = failMessage;
+      });
+    },
+
+    [SET_PARAMS]: (state, { payload: params }) => {
+      return produce(state, (draft) => {
+        draft.params = params;
+      });
+    },
+
+    [SET_NEWS]: (state, { payload: datas }) => {
       return produce(state, (draft) => {
         const { totalResults, articles } = datas;
         draft.results = {

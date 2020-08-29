@@ -1,5 +1,5 @@
 import axios from 'axios';
-import httpGet from './index';
+import { httpGet } from './index';
 
 //jest.mock('axios');
 //Interceptors 을 통해 중간에 탈취 가능
