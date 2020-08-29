@@ -1,0 +1,1 @@
+it('should call scrollDispatch', () => {});
