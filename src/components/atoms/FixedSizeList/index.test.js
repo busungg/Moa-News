@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-
+import { render } from '@testing-library/react';
 import FixedSizeList from './index';
 
 const wrap = document.createElement('div');
@@ -8,7 +7,7 @@ wrap.setAttribute('style', 'width: 100px; height:100px;');
 
 const list = [];
 beforeAll(() => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     list.push(
       <div key={i} style={{ width: '100%', height: 50 }}>
         {`div test ${i}`}
@@ -26,15 +25,27 @@ it('should call scrollDispatch', () => {
   //scrollDispatch mock 만들기
   const scrollDispatch = jest.fn();
 
-  const { getByRole, debug } = render(
+  const { getByText, rerender } = render(
     <FixedSizeList
       rowHeight={50}
       list={list}
       scrollDispatch={scrollDispatch}
     />,
-    { container: document.body.appendChild(wrap) }
+    {
+      container: document.body.appendChild(wrap),
+    }
+  );
+  expect(getByText('div test 1')).toBeDefined();
+
+  rerender(
+    <FixedSizeList
+      rowHeight={50}
+      list={list}
+      scrollDispatch={scrollDispatch}
+      scrollToIndex={49}
+    />
   );
 
-  debug();
-  console.log(scrollDispatch.mock.calls.length);
+  expect(getByText('div test 49')).toBeDefined();
+  expect(scrollDispatch.mock.calls.length).toBe(1);
 });
