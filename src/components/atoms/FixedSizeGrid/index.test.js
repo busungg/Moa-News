@@ -44,6 +44,16 @@ it('should call scrollDispatch', () => {
       columnCount={2}
       list={list}
       scrollDispatch={scrollDispatch}
+      scrollToRow={20}
+    />
+  );
+
+  rerender(
+    <FixedSizeGrid
+      rowHeight={50}
+      columnCount={2}
+      list={list}
+      scrollDispatch={scrollDispatch}
       scrollToRow={24}
     />
   );

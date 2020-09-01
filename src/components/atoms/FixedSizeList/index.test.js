@@ -42,6 +42,15 @@ it('should call scrollDispatch', () => {
       rowHeight={50}
       list={list}
       scrollDispatch={scrollDispatch}
+      scrollToIndex={30}
+    />
+  );
+
+  rerender(
+    <FixedSizeList
+      rowHeight={50}
+      list={list}
+      scrollDispatch={scrollDispatch}
       scrollToIndex={49}
     />
   );

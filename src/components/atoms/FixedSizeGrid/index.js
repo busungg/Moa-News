@@ -34,7 +34,7 @@ const FixedSizeGrid = ({
 
   const onScroll = useCallback(
     ({ clientHeight, scrollHeight, scrollTop }) => {
-      if (list.length > 0 && clientHeight + scrollTop === scrollHeight) {
+      if (list.length > 0 && clientHeight + scrollTop > scrollHeight - 10) {
         if (scrollDispatch) {
           scrollDispatch();
         }

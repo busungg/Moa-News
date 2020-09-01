@@ -4,12 +4,14 @@ import { getHeadlines } from '../../apis/newsListApi';
 
 //http
 const LOADING = 'newsList/LOADING';
+const END = 'newsList/END';
 const FAIL = 'newsList/FAIL';
 const SET_PARAMS = 'newsList/SET_PARAMS';
 const SET_NEWS = 'newsList/SET_NEWS';
 
 //action
 export const loading = createAction(LOADING);
+export const end = createAction(END);
 export const fail = createAction(FAIL, (isFail, failMessage) => {
   return {
     isFail,
@@ -24,8 +26,11 @@ export const getNews = (params) => async (dispatch) => {
   dispatch(loading(true));
   try {
     const response = await getHeadlines(params);
-    dispatch(setParams(params));
-    dispatch(setNews(response.data));
+    if (response.data.articles.length === 0) {
+      dispatch(end(true));
+    } else {
+      dispatch(setNews(response.data));
+    }
   } catch (e) {
     dispatch(fail(true, e));
   }
@@ -33,12 +38,13 @@ export const getNews = (params) => async (dispatch) => {
 };
 
 const initialState = {
-  loading: false,
+  isLoading: false,
+  isEnd: false,
   isFail: false,
   failMessage: '',
   params: {
     country: 'kr',
-    page: 0,
+    page: 1,
     pageSize: 10,
   },
   results: { totalResults: 0, articles: [] },
@@ -46,10 +52,12 @@ const initialState = {
 
 const newsList = handleActions(
   {
-    [LOADING]: (state, { payload }) => {
-      return produce(state, (draft) => {
-        draft.loading = payload;
-      });
+    [LOADING]: (state, { payload: isLoading }) => {
+      return { ...state, isLoading };
+    },
+
+    [END]: (state, { payload: isEnd }) => {
+      return { ...state, isEnd };
     },
 
     [FAIL]: (state, { payload }) => {
@@ -72,9 +80,8 @@ const newsList = handleActions(
         const { totalResults, articles } = datas;
         draft.results = {
           totalResults,
-          articles: articles && articles.concat(draft.results.articles),
+          articles: articles && draft.results.articles.concat(articles),
         };
-        draft.loading = false;
       });
     },
   },

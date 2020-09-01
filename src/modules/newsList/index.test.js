@@ -1,7 +1,14 @@
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
-import newsList, { loading, fail, setParams, setNews, getNews } from './index';
+import newsList, {
+  loading,
+  end,
+  fail,
+  setParams,
+  setNews,
+  getNews,
+} from './index';
 
 //using mock
 const mockStore = configureStore([ReduxThunk]);
@@ -10,6 +17,7 @@ const mockStore = configureStore([ReduxThunk]);
 jest.mock('axios');
 
 const LOADING = 'newsList/LOADING';
+const END = 'newsList/END';
 const FAIL = 'newsList/FAIL';
 const SET_PARAMS = 'newsList/SET_PARAMS';
 const SET_NEWS = 'newsList/SET_NEWS';
@@ -30,6 +38,12 @@ describe('newsList action test', () => {
 
     const action = setParams(params);
     const expectedAction = { type: SET_PARAMS, payload: params };
+    expect(action).toEqual(expectedAction);
+  });
+
+  it('should send end action', () => {
+    const action = end(true);
+    const expectedAction = { type: END, payload: true };
     expect(action).toEqual(expectedAction);
   });
 
@@ -59,7 +73,7 @@ describe('newsList reducer test', () => {
     const state = newsList(undefined, loading(true));
     const expectedState = {
       ...state,
-      loading: true,
+      isLoading: true,
     };
 
     expect(state).toEqual(expectedState);
@@ -78,6 +92,15 @@ describe('newsList reducer test', () => {
       params,
     };
 
+    expect(state).toEqual(expectedState);
+  });
+
+  it('should send end action', () => {
+    const state = newsList(undefined, end(true));
+    const expectedState = {
+      ...state,
+      isEnd: true,
+    };
     expect(state).toEqual(expectedState);
   });
 
@@ -110,7 +133,7 @@ describe('newsList thunk test', () => {
 
   beforeAll(() => {
     initialState = {
-      loading: false,
+      isLoading: false,
       isFail: false,
       failMessage: '',
       params: {
@@ -137,9 +160,21 @@ describe('newsList thunk test', () => {
 
     const actions = store.getActions();
     expect(actions[0]).toEqual({ type: LOADING, payload: true });
-    expect(actions[1]).toEqual({ type: SET_PARAMS, payload: params });
-    expect(actions[2]).toEqual({ type: SET_NEWS, payload: data });
-    expect(actions[3]).toEqual({ type: LOADING, payload: false });
+    expect(actions[1]).toEqual({ type: SET_NEWS, payload: data });
+    expect(actions[2]).toEqual({ type: LOADING, payload: false });
+  });
+
+  it('should be success but articles is Empty', async () => {
+    const data = { totalResults: 5, articles: [] };
+    axios.get.mockResolvedValue({ data });
+
+    const store = mockStore(initialState);
+    await store.dispatch(getNews(params));
+
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({ type: LOADING, payload: true });
+    expect(actions[1]).toEqual({ type: END, payload: true });
+    expect(actions[2]).toEqual({ type: LOADING, payload: false });
   });
 
   it('should be fail', async () => {
