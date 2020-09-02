@@ -3,7 +3,14 @@ import { render } from '@testing-library/react';
 import Card from './index';
 
 test('renders card', () => {
-  const { getByText } = render(<Card />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const title = 'title',
+    description = 'description';
+
+  const { getByText } = render(
+    <Card title={title} description={description} />
+  );
+  const titleElement = getByText(title);
+  const descElement = getByText(description);
+  expect(titleElement).toBeInTheDocument();
+  expect(descElement).toBeInTheDocument();
 });
