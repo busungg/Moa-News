@@ -8,7 +8,7 @@ import 'reset-css';
 import 'react-virtualized/styles.css';
 import styles from './style.module.css';
 
-import Gnb from './components/atoms/Gnb';
+import NewsGnbContainer from './containers/NewsGnbContainer';
 import NewsListContainer from './containers/NewsListContainer';
 //import NewsList from './components/templates/NewsList';
 
@@ -30,7 +30,7 @@ const App = () => {
           <span className={styles.logo}>Moa News</span>
         </div>
         <div className={styles.wrap}>
-          <Gnb list={gnbList} />
+          <NewsGnbContainer list={gnbList} />
         </div>
       </header>
       <section>

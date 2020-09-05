@@ -3,22 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCategory } from '../../modules/newsCategory';
 import Gnb from '../../components/atoms/Gnb';
 
-const NewsCategoryContainer = ({ list }) => {
+const NewsGnbContainer = ({ list }) => {
   const selected = useSelector((state) => state.newsCategory);
   const dispatch = useDispatch();
 
   const onSelect = useCallback(
-    (title, cateogry) => {
-      dispatch(setCategory({ title, cateogry }));
+    (title, category) => {
+      dispatch(setCategory({ title, category }));
     },
     [dispatch]
   );
 
   return (
     <>
-      <Gnb list={list} />
+      <Gnb list={list} selected={selected} onSelect={onSelect} />
     </>
   );
 };
 
-export default NewsCategoryContainer;
+export default NewsGnbContainer;
