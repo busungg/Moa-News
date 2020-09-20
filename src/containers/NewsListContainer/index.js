@@ -1,29 +1,51 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNews, setParams } from '../../modules/newsList';
+import { init, getNews, setParams } from '../../modules/newsList';
 
 import NewsList from '../../components/templates/NewsList';
 
 const NewsListContainer = ({ windowSize }) => {
-  const { params, results, isLoading, isEnd } = useSelector(
-    (state) => state.newsList
-  );
   const dispatch = useDispatch();
+  const { category } = useSelector((state) => state.newsCategory);
+  let state = useSelector((state) => state.newsList[category]);
+
+  if (!state) {
+    state = {};
+  }
+
+  const { params, results, isLoading, isEnd } = state;
 
   useEffect(() => {
-    dispatch(getNews(params));
-  }, [params, dispatch]);
+    if (params) {
+      dispatch(
+        getNews(category, {
+          ...params,
+          category: category === 'all' ? '' : category,
+        })
+      );
+    } else {
+      dispatch(init(category));
+    }
+  }, [category, params, dispatch]);
 
   const scrollDispatch = useCallback(() => {
     if (!isLoading && !isEnd) {
-      dispatch(setParams({ ...params, page: params.page + 1 }));
+      console.log(category);
+
+      dispatch(
+        setParams(category, {
+          ...params,
+          page: params.page + 1,
+          category: category === 'all' ? '' : category,
+        })
+      );
     }
-  }, [params, isLoading, isEnd, dispatch]);
+  }, [category, params, isLoading, isEnd, dispatch]);
 
   return (
     <>
       {isLoading ? <div>Loading</div> : false}
-      {results.articles && (
+      {results && results.articles && (
         <NewsList
           screenSize={windowSize.width}
           articles={results.articles}

@@ -1,7 +1,9 @@
+import produce from 'immer';
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
 import newsList, {
+  init,
   loading,
   end,
   fail,
@@ -16,16 +18,49 @@ const mockStore = configureStore([ReduxThunk]);
 //using jest axios mock
 jest.mock('axios');
 
+const INIT = 'newsList/INIT';
 const LOADING = 'newsList/LOADING';
 const END = 'newsList/END';
 const FAIL = 'newsList/FAIL';
 const SET_PARAMS = 'newsList/SET_PARAMS';
 const SET_NEWS = 'newsList/SET_NEWS';
 
+const initCategoryState = {
+  isLoading: false,
+  isEnd: false,
+  isFail: false,
+  failMessage: '',
+  params: {
+    country: 'kr',
+    page: 1,
+    pageSize: 10,
+    category: '',
+  },
+  results: { totalResults: 0, articles: [] },
+};
+
 describe('newsList action test', () => {
+  it('should send init action', () => {
+    const action = init(1);
+    const expectedAction = {
+      type: INIT,
+      payload: {
+        category: 1,
+        init: initCategoryState,
+      },
+    };
+    expect(action).toEqual(expectedAction);
+  });
+
   it('should send loading action', () => {
-    const action = loading(true);
-    const expectedAction = { type: LOADING, payload: true };
+    const action = loading(1, true);
+    const expectedAction = {
+      type: LOADING,
+      payload: {
+        category: 1,
+        isLoading: true,
+      },
+    };
     expect(action).toEqual(expectedAction);
   });
 
@@ -36,32 +71,39 @@ describe('newsList action test', () => {
       pageSize: 10,
     };
 
-    const action = setParams(params);
-    const expectedAction = { type: SET_PARAMS, payload: params };
+    const action = setParams(1, params);
+    const expectedAction = {
+      type: SET_PARAMS,
+      payload: {
+        category: 1,
+        params,
+      },
+    };
     expect(action).toEqual(expectedAction);
   });
 
   it('should send end action', () => {
-    const action = end(true);
-    const expectedAction = { type: END, payload: true };
+    const action = end(1, true);
+    const expectedAction = { type: END, payload: { category: 1, isEnd: true } };
     expect(action).toEqual(expectedAction);
   });
 
   it('should send fail action', () => {
-    const action = fail(true, 'Error Action Test');
+    const action = fail(1, true, 'Error Action Test');
     const expectedAction = {
       type: FAIL,
-      payload: { isFail: true, failMessage: 'Error Action Test' },
+      payload: { category: 1, isFail: true, failMessage: 'Error Action Test' },
     };
 
     expect(action).toEqual(expectedAction);
   });
 
   it('should send set news action', () => {
-    const action = setNews({ datas: 123 });
+    const data = { datas: 123 };
+    const action = setNews(1, data);
     const expectedAction = {
       type: SET_NEWS,
-      payload: { datas: 123 },
+      payload: { category: 1, datas: data },
     };
 
     expect(action).toEqual(expectedAction);
@@ -69,13 +111,20 @@ describe('newsList action test', () => {
 });
 
 describe('newsList reducer test', () => {
-  it('should set new loading state', () => {
-    const state = newsList(undefined, loading(true));
-    const expectedState = {
-      ...state,
-      isLoading: true,
-    };
+  let initState = beforeEach(() => {
+    initState = produce(
+      {
+        1: initCategoryState,
+      },
+      (draft) => draft
+    );
+  });
 
+  it('should set new loading state', () => {
+    const state = newsList(initState, loading(1, true));
+    const expectedState = produce(state, (draft) => {
+      draft[1].isLoading = true;
+    });
     expect(state).toEqual(expectedState);
   });
 
@@ -86,31 +135,29 @@ describe('newsList reducer test', () => {
       pageSize: 10,
     };
 
-    const state = newsList(undefined, setParams(params));
-    const expectedState = {
-      ...state,
-      params,
-    };
+    const state = newsList(initState, setParams(1, params));
+    const expectedState = produce(state, (draft) => {
+      draft[1].params = params;
+    });
 
     expect(state).toEqual(expectedState);
   });
 
   it('should send end action', () => {
-    const state = newsList(undefined, end(true));
-    const expectedState = {
-      ...state,
-      isEnd: true,
-    };
+    const state = newsList(initState, end(1, true));
+    const expectedState = produce(state, (draft) => {
+      draft[1].isEnd = true;
+    });
+
     expect(state).toEqual(expectedState);
   });
 
   it('should set new fail state', () => {
-    const state = newsList(undefined, fail(true, 'TEST FAIL'));
-    const expectedState = {
-      ...state,
-      isFail: true,
-      failMessage: 'TEST FAIL',
-    };
+    const state = newsList(initState, fail(1, true, 'TEST FAIL'));
+    const expectedState = produce(state, (draft) => {
+      draft[1].isFail = true;
+      draft[1].failMessage = 'TEST FAIL';
+    });
 
     expect(state).toEqual(expectedState);
   });
@@ -118,11 +165,10 @@ describe('newsList reducer test', () => {
   it('should set new data state', () => {
     const payload = { totalResults: 5, articles: [1, 2, 3, 4, 5] };
 
-    const state = newsList(undefined, setNews(payload));
-    const expectedState = {
-      ...state,
-      results: payload,
-    };
+    const state = newsList(initState, setNews(1, payload));
+    const expectedState = produce(state, (draft) => {
+      draft[1].results = payload;
+    });
 
     expect(state).toEqual(expectedState);
   });
@@ -133,15 +179,17 @@ describe('newsList thunk test', () => {
 
   beforeAll(() => {
     initialState = {
-      isLoading: false,
-      isFail: false,
-      failMessage: '',
-      params: {
-        country: 'kr',
-        page: 0,
-        pageSize: 10,
+      1: {
+        isLoading: false,
+        isFail: false,
+        failMessage: '',
+        params: {
+          country: 'kr',
+          page: 0,
+          pageSize: 10,
+        },
+        results: { totalResults: 0, articles: [] },
       },
-      results: { totalResults: 0, articles: [] },
     };
 
     params = {
@@ -156,12 +204,21 @@ describe('newsList thunk test', () => {
     axios.get.mockResolvedValue({ data });
 
     const store = mockStore(initialState);
-    await store.dispatch(getNews(params));
+    await store.dispatch(getNews(1, params));
 
     const actions = store.getActions();
-    expect(actions[0]).toEqual({ type: LOADING, payload: true });
-    expect(actions[1]).toEqual({ type: SET_NEWS, payload: data });
-    expect(actions[2]).toEqual({ type: LOADING, payload: false });
+    expect(actions[0]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: true },
+    });
+    expect(actions[1]).toEqual({
+      type: SET_NEWS,
+      payload: { category: 1, datas: data },
+    });
+    expect(actions[2]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: false },
+    });
   });
 
   it('should be success but articles is Empty', async () => {
@@ -169,12 +226,21 @@ describe('newsList thunk test', () => {
     axios.get.mockResolvedValue({ data });
 
     const store = mockStore(initialState);
-    await store.dispatch(getNews(params));
+    await store.dispatch(getNews(1, params));
 
     const actions = store.getActions();
-    expect(actions[0]).toEqual({ type: LOADING, payload: true });
-    expect(actions[1]).toEqual({ type: END, payload: true });
-    expect(actions[2]).toEqual({ type: LOADING, payload: false });
+    expect(actions[0]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: true },
+    });
+    expect(actions[1]).toEqual({
+      type: END,
+      payload: { category: 1, isEnd: true },
+    });
+    expect(actions[2]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: false },
+    });
   });
 
   it('should be fail', async () => {
@@ -182,14 +248,20 @@ describe('newsList thunk test', () => {
     axios.get.mockRejectedValue(data);
 
     const store = mockStore(initialState);
-    await store.dispatch(getNews(params));
+    await store.dispatch(getNews(1, params));
 
     const actions = store.getActions();
-    expect(actions[0]).toEqual({ type: LOADING, payload: true });
+    expect(actions[0]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: true },
+    });
     expect(actions[1]).toEqual({
       type: FAIL,
-      payload: { isFail: true, failMessage: 'API Fail' },
+      payload: { category: 1, isFail: true, failMessage: 'API Fail' },
     });
-    expect(actions[2]).toEqual({ type: LOADING, payload: false });
+    expect(actions[2]).toEqual({
+      type: LOADING,
+      payload: { category: 1, isLoading: false },
+    });
   });
 });

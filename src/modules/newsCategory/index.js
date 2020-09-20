@@ -5,8 +5,8 @@ const SET_CATEGORY = 'newsCategory/SET_CATEGORY';
 export const setCategory = createAction(SET_CATEGORY);
 
 const initialState = {
-  title: '',
-  category: '',
+  title: '전체',
+  category: 'all',
 };
 
 const newsCategory = handleActions(
