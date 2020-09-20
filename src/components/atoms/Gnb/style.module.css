@@ -18,6 +18,10 @@
   background-color: var(--color-background-active);
 }
 
+.gnb-item--selected {
+  background-color: var(--color-background-active);
+}
+
 .gnb-item a {
   display: block;
   line-height: 1.8rem;
@@ -34,5 +38,9 @@
 }
 
 .gnb-item a:active {
+  color: var(--color-text-active);
+}
+
+.gnb-item--selected a {
   color: var(--color-text-active);
 }

@@ -1,7 +1,12 @@
 import React, { useCallback } from 'react';
 import { AutoSizer, List } from 'react-virtualized';
 
-const FixedSizeList = ({ rowHeight, list, dispatch }) => {
+const FixedSizeList = ({
+  rowHeight,
+  list,
+  scrollDispatch,
+  scrollToIndex = -1,
+}) => {
   const render = useCallback(
     ({
       index, // Index of row
@@ -27,11 +32,13 @@ const FixedSizeList = ({ rowHeight, list, dispatch }) => {
 
   const onScroll = useCallback(
     ({ clientHeight, scrollHeight, scrollTop }) => {
-      if (list.length > 0 && clientHeight + scrollTop === scrollHeight) {
-        dispatch({ type: 'getData' });
+      if (list.length > 0 && clientHeight + scrollTop > scrollHeight - 10) {
+        if (scrollDispatch) {
+          scrollDispatch();
+        }
       }
     },
-    [list]
+    [list, scrollDispatch]
   );
 
   return (
@@ -45,6 +52,7 @@ const FixedSizeList = ({ rowHeight, list, dispatch }) => {
             rowHeight={rowHeight + 10}
             rowRenderer={render}
             onScroll={onScroll}
+            scrollToIndex={scrollToIndex}
           />
         );
       }}

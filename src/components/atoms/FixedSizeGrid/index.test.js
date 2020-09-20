@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import FixedSizeList from './index';
+import FixedSizeGrid from './index';
 
 const wrap = document.createElement('div');
 wrap.setAttribute('style', 'width: 100px; height:100px;');
@@ -26,8 +26,9 @@ it('should call scrollDispatch', () => {
   const scrollDispatch = jest.fn();
 
   const { getByText, rerender } = render(
-    <FixedSizeList
+    <FixedSizeGrid
       rowHeight={50}
+      columnCount={2}
       list={list}
       scrollDispatch={scrollDispatch}
     />,
@@ -38,20 +39,22 @@ it('should call scrollDispatch', () => {
   expect(getByText('div test 1')).toBeDefined();
 
   rerender(
-    <FixedSizeList
+    <FixedSizeGrid
       rowHeight={50}
+      columnCount={2}
       list={list}
       scrollDispatch={scrollDispatch}
-      scrollToIndex={30}
+      scrollToRow={20}
     />
   );
 
   rerender(
-    <FixedSizeList
+    <FixedSizeGrid
       rowHeight={50}
+      columnCount={2}
       list={list}
       scrollDispatch={scrollDispatch}
-      scrollToIndex={49}
+      scrollToRow={24}
     />
   );
 

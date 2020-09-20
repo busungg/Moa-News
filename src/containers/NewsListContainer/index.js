@@ -1,24 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNews } from '../../modules/newsList';
+import { init, getNews, setParams } from '../../modules/newsList';
 
 import NewsList from '../../components/templates/NewsList';
 
 const NewsListContainer = ({ windowSize }) => {
-  const { params, results, loading } = useSelector((state) => state.newsList);
   const dispatch = useDispatch();
+  const { category } = useSelector((state) => state.newsCategory);
+  let state = useSelector((state) => state.newsList[category]);
+
+  if (!state) {
+    state = {};
+  }
+
+  const { params, results, isLoading, isEnd } = state;
 
   useEffect(() => {
-    if (params.page !== 1) {
-      dispatch(getNews({ ...params, page: 1 }));
+    if (params) {
+      dispatch(
+        getNews(category, {
+          ...params,
+          category: category === 'all' ? '' : category,
+        })
+      );
+    } else {
+      dispatch(init(category));
     }
-  }, []);
+  }, [category, params, dispatch]);
+
+  const scrollDispatch = useCallback(() => {
+    if (!isLoading && !isEnd) {
+      console.log(category);
+
+      dispatch(
+        setParams(category, {
+          ...params,
+          page: params.page + 1,
+          category: category === 'all' ? '' : category,
+        })
+      );
+    }
+  }, [category, params, isLoading, isEnd, dispatch]);
 
   return (
     <>
-      {loading ? <div>Loading</div> : false}
-      {results.articles && (
-        <NewsList screenSize={windowSize.width} articles={results.articles} />
+      {isLoading ? <div>Loading</div> : false}
+      {results && results.articles && (
+        <NewsList
+          screenSize={windowSize.width}
+          articles={results.articles}
+          scrollDispath={scrollDispatch}
+        />
       )}
     </>
   );

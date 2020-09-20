@@ -1,7 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { AutoSizer, Grid } from 'react-virtualized';
 
-const FixedSizeGrid = ({ rowHeight, columnCount, list, dispatch }) => {
+const FixedSizeGrid = ({
+  rowHeight,
+  columnCount,
+  list,
+  scrollDispatch,
+  scrollToRow = -1,
+}) => {
   const render = useCallback(
     ({ key, columnIndex, rowIndex, style }) => {
       return (
@@ -28,11 +34,13 @@ const FixedSizeGrid = ({ rowHeight, columnCount, list, dispatch }) => {
 
   const onScroll = useCallback(
     ({ clientHeight, scrollHeight, scrollTop }) => {
-      if (list.length > 0 && clientHeight + scrollTop === scrollHeight) {
-        dispatch({ type: 'getData' });
+      if (list.length > 0 && clientHeight + scrollTop > scrollHeight - 10) {
+        if (scrollDispatch) {
+          scrollDispatch();
+        }
       }
     },
-    [list]
+    [list, scrollDispatch]
   );
 
   return (
@@ -47,6 +55,7 @@ const FixedSizeGrid = ({ rowHeight, columnCount, list, dispatch }) => {
           columnWidth={width / columnCount - 10}
           rowHeight={rowHeight + 10}
           onScroll={onScroll}
+          scrollToRow={scrollToRow}
         />
       )}
     </AutoSizer>
