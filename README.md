@@ -30,6 +30,10 @@
 
 - 개인 프로젝트이기 때문에 서버 부하가 적을 것으로 예상되어 서버 관리의 필요성이 적음
 - 인프라 구축 보다는 프로젝트 구현이 더 중요함
+- Heroku 사용 시 주의 사항
+  - 완전한 Client Side 프로젝트라면 Build pack이라는것을 사용해야 한다.
+  - [CRA 설명 주소](https://create-react-app.dev/docs/deployment/)
+  - [Heroku 설명 주소](https://blog.heroku.com/deploying-react-with-zero-configuration)
 
 => 복잡한 AWS 보다는 Heroku 사용이 더 적합
 ( [AWS vs Heroku](https://rubygarage.org/blog/heroku-vs-amazon-web-services) )
