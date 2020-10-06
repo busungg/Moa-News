@@ -7,7 +7,7 @@ export const httpGet = async (url, params, headers) => {
     params: {
       ...params,
     },
-    responseType: 'json',
+    //responseType: 'json',
     headers: {
       ...headers,
     },
