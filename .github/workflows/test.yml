@@ -2,7 +2,7 @@ name: test-actions
 on:
   push:
     paths-ignore: ['*.md']
-  pull-request:
+  pull_request:
     paths-ignore: ['*.md']
 jobs:
   test-actions:
