@@ -8,6 +8,10 @@
 
 ## 4. CI/CD 환경 구현해보기
 
+1. Heroku CI 사용
+   - Github 와 연동할 수 있고 다양한 옵션이 존재한다.
+   - Review App이라는 기능을 제공하여 Pull Request 발생 시 해당 code로 Review 할 수 있도록 App을 제공할 수 있어서 더 안전하다
+
 ## 5. TDD 개발방법론에 익숙해지기
 
 ### 5.1 Story Book 적용

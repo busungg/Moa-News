@@ -1,0 +1,29 @@
+name: test-actions
+on:
+  push:
+    paths-ignore: ['*.md']
+  pull_request:
+    paths-ignore: ['*.md']
+jobs:
+  test-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Test and generate coverage report
+        run: npm run coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage/
+          name: test-coverage
+          fail_ci_if_error: true

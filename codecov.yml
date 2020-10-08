@@ -1,0 +1,10 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 50% # the required coverage value
+        threshold: 5% # Allow the coverage to drop by X%, and posting a success status.
+
+comment:
+  layout: 'reach, diff, flags, files'
+  behavior: default
