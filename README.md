@@ -41,3 +41,7 @@
 
 => 복잡한 AWS 보다는 Heroku 사용이 더 적합
 ( [AWS vs Heroku](https://rubygarage.org/blog/heroku-vs-amazon-web-services) )
+
+## 7. Git 기능들 다양하게 사용해보기
+
+1. [누구나 쉽게 이해할 수 있는 Git 입문](https://backlog.com/git-tutorial/kr/)
